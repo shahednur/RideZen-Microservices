@@ -1,0 +1,22 @@
+# Ignore Maven output
+target/
+!target/trip-service-*.jar
+
+# Ignore Git and IDE metadata
+.git/
+.gitignore
+.idea/
+*.iml
+
+# Ignore OS & editor artifacts
+.DS_Store
+*.log
+
+# Ignore test reports
+surefire-reports/
+test-output/
+
+# Ignore CI/CD files (if not needed in container)
+.github/
+.gitlab/
+.ci/
