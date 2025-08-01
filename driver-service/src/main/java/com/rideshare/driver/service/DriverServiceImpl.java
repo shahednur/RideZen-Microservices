@@ -71,11 +71,14 @@ public class DriverServiceImpl implements DriverService {
     public DriverResponseDto addOrUpdateVehicle(UUID driverId, VehicleDto vehicleDto) {
         Drivers driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new RuntimeException("Driver not found"));
-        if (vehicleRepository.existsByPlateNumber(vehicleDto.getPlateNumber())) {
-            throw new RuntimeException("Vehicle with this plate number doesn't exist");
+        // Check if plate number already exists (but allow update for same driver)
+        Vehicle existingVehicle = vehicleRepository.findByPlateNumber(vehicleDto.getPlateNumber()).orElse(null);
+        if (existingVehicle != null && !existingVehicle.getDriver().getId().equals(driverId)) {
+            throw new RuntimeException("Vehicle with this plate number already exists");
         }
 
-        Vehicle vehicle = vehicleRepository.findByDriver(driverId).orElse(null);
+        // Vehicle vehicle = vehicleRepository.findByDriver(driverId).orElse(null);
+        Vehicle vehicle = vehicleRepository.findByDriver(driver).orElse(null);
 
         if (vehicle == null) {
             vehicle = Vehicle.builder()
@@ -84,10 +87,10 @@ public class DriverServiceImpl implements DriverService {
         }
 
         vehicle.setMake(vehicleDto.getMake());
-        vehicle.setModel(vehicle.getModel());
-        vehicle.setPlateNumber(vehicle.getPlateNumber());
-        vehicle.setColor(vehicle.getColor());
-        vehicle.setYear(vehicle.getYear());
+        vehicle.setModel(vehicleDto.getModel());
+        vehicle.setPlateNumber(vehicleDto.getPlateNumber());
+        vehicle.setColor(vehicleDto.getColor());
+        vehicle.setYear(vehicleDto.getYear());
 
         vehicleRepository.save(vehicle);
         driver.setVehicle(vehicle);

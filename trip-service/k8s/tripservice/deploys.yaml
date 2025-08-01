@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pvc
+  name: mysql-pvc-manual
 spec:
   resources:
     requests:
@@ -63,13 +63,13 @@ spec:
           mountPath: /docker-entrypoint-initdb.d
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-  volumes:
-    - name: mysql-persistent-storage
-      persistentVolumeClaim:
-        claimName: mysql-pvc
-    - name: mysql-initdb
-      configMap:
-        name: mysql-initdb-cm
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc-manual
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-cm
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -79,13 +79,15 @@ data:
   init.sql:
     CREATE DATABASE IF NOT EXISTS tripdb
     CREATE DATABASE IF NOT EXISTS paymentdb
+    CREATE DATABASE IF NOT EXISTS productdb
+    CREATE DATABASE IF NOT EXISTS orderdb
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
 spec:
-  ClusterIP: None
+  clusterIP: None
   selector:
     app: mysql
   ports:

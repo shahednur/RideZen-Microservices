@@ -31,6 +31,7 @@ public class Drivers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -49,7 +50,7 @@ public class Drivers {
     @Column(name = "status", nullable = false)
     private DriverStatus status;
 
-    @OneToOne(mappedBy = "driver", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(mappedBy = "driver", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Vehicle vehicle;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -59,13 +60,22 @@ public class Drivers {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    public void PrePersist() {
+    public void prePersist() {
         this.createdAt = LocalDateTime.now();
-        this.status = DriverStatus.OFFLINE;
+        if (this.status == null) {
+            this.status = DriverStatus.OFFLINE;
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+        if (vehicle != null && vehicle.getDriver() != this) {
+            vehicle.setDriver(this);
+        }
     }
 }
