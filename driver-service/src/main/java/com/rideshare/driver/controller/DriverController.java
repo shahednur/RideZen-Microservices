@@ -41,9 +41,10 @@ public class DriverController {
 
     // Get Driver by id
     @GetMapping("/{driverId}")
-    public ResponseEntity<DriverResponseDto> getDriverById(@PathVariable UUID driverId) {
+    public ResponseEntity<DriverResponseDto> getDriverById(@PathVariable String driverId) {
         log.info("Fetching driver by id: {}", driverId);
-        DriverResponseDto response = driverService.getDriverById(driverId);
+        UUID uuid = UUID.fromString(formatUuid(driverId));
+        DriverResponseDto response = driverService.getDriverById(uuid);
         return ResponseEntity.ok(response);
     }
 
@@ -63,5 +64,14 @@ public class DriverController {
         log.info("Adding/updating vehicle for driver: {}", driverId);
         DriverResponseDto response = driverService.addOrUpdateVehicle(driverId, vehicleDto);
         return ResponseEntity.ok(response);
+    }
+
+    private String formatUuid(String raw) {
+        if (raw.length() == 32) {
+            return raw.replaceFirst(
+                    "(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})",
+                    "$1-$2-$3-$4-$5");
+        }
+        return raw;
     }
 }

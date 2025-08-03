@@ -1,0 +1,13 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: driver-service
+spec:
+  selector:
+    app: driver-service  # Must match labels in deployment.yaml
+  ports:
+    - protocol: TCP
+      port: 80          # External port (for clients)
+      targetPort: 8080  # Matches your Spring Boot port
+  type: ClusterIP       # Default (internal-only)

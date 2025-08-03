@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: driver-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: driver-service
+  template:
+    metadata:
+      labels:
+        app: driver-service
+    spec:
+      initContainers:
+      - name: wait-for-mysql
+        image: mysql:5.7
+        command: ['sh', '-c', 'until mysql -h host.docker.internal -u root -e "SELECT 1"; do echo "Waiting for MySQL"; sleep 3; done']
+      containers:
+      - name: app
+        image: your-image-name
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://host.docker.internal:3306/driverservice?useSSL=false&autoReconnect=true&connectTimeout=10000"
