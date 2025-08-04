@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passenger-service
+  labels:
+    app: passenger-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: passenger-service
+  template:
+    metadata:
+      labels:
+        app: passenger-service
+    spec:
+      containers:
+      - name: passenger-service
+        image: passenger-service:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+           - name: DB_HOST
+             value: mysql
+           - name: DB_PORT
+             value: "3306"
+           - name: DB_NAME
+             value: passengerdb
+           - name: DB_USER
+             value: root
+           - name: DB_PASS
+             value: password
+           - name: SPRING_PROFILES_ACTIVE
+             value: docker
