@@ -15,12 +15,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "fares")
+@Table(name = "transactions")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fare {
+public class PaymentTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +29,21 @@ public class Fare {
     @Column(nullable = false)
     private Long tripId;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal baseFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal distanceFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal timeFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal surgeFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalFare;
+    @Column(nullable = false)
+    private Long passengerId;
 
     @Column(nullable = false)
-    private LocalDateTime calculatedAt;
+    private Long driverId;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
+
+    @Column(nullable = false)
+    private String paymentMethod;
+
+    @Column(nullable = false)
+    private String status;
+
+    @Column(nullable = false)
+    private LocalDateTime paidAt;
 }

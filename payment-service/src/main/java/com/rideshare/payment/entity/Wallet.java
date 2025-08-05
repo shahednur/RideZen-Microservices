@@ -15,35 +15,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "fares")
+@Table(name = "wallets")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fare {
+public class Wallet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long tripId;
+    @Column(nullable = false, unique = true)
+    private Long userId;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal baseFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal distanceFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal timeFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal surgeFare;
-
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalFare;
+    private BigDecimal balance;
 
     @Column(nullable = false)
-    private LocalDateTime calculatedAt;
+    private LocalDateTime updatedAt;
 }
