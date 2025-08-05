@@ -1,0 +1,43 @@
+# Ignore Gradle or Maven cache
+.mvn/
+**/target/
+**/build/
+
+# Ignore logs
+*.log
+logs/
+*.tmp
+
+# Ignore test outputs
+**/test/
+**/out/
+
+# Ignore IDE/editor configs
+*.iml
+.idea/
+*.sw?
+.vscode/
+*.bak
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Git stuff
+.git/
+.gitignore
+
+# Ignore local environment files
+.env
+.env.*
+
+# Ignore Docker cache
+.dockerignore
+Dockerfile
+mysql-springboot-config.yaml
+# Ignore Kubernetes YAMLs if not needed in container
+*.yaml
+
+# Ignore any OS-generated files
+*.swp
+*~
