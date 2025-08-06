@@ -26,8 +26,8 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private Long userId;
+    @Column(name = "rider_id", nullable = false)
+    private Long riderId;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal balance;

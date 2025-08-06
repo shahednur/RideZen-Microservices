@@ -30,7 +30,7 @@ public class PaymentTransaction {
     private Long tripId;
 
     @Column(nullable = false)
-    private Long passengerId;
+    private Long riderId;
 
     @Column(nullable = false)
     private Long driverId;
